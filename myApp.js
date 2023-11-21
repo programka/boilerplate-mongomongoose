@@ -4,10 +4,23 @@ let mongoose = require('mongoose');
 
 mongoose.connect("mongodb+srv://user:<user>@cluster0.o2djzwy.mongodb.net/mongodb-and-mongoose?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
 
-let Person;
+personSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  age: Number,
+  favoriteFoods: [String]
+});
+
+let Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  let janeFonda = new Person({ name: "Jane Fonda", age: 32, favoriteFoods: ["soup", "pasta"] });
+  janeFonda.save(function(err, data) {
+    if (err) return console.error(err);
+    done(null, data);
+  });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
